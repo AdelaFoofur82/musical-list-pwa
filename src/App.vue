@@ -287,7 +287,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, nextTick } from 'vue'
+import { ref, onMounted, computed, nextTick, watch } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import * as bootstrap from 'bootstrap'
@@ -320,6 +320,7 @@ export default {
     onMounted(() => {
       initToast()
       setupPWA()
+      setupMediaSession()
       loadFromStorage()
       checkUrlForPlaylist()
       handleShareTarget()
@@ -337,6 +338,51 @@ export default {
         deferredPrompt.value = e
         showInstallButton.value = true
       })
+    }
+
+    const setupMediaSession = () => {
+      if ('mediaSession' in navigator) {
+        // Configurar handlers de Media Session
+        navigator.mediaSession.setActionHandler('play', () => {
+          if (audioPlayer.value) {
+            audioPlayer.value.play()
+            isPlaying.value = true
+          }
+        })
+
+        navigator.mediaSession.setActionHandler('pause', () => {
+          if (audioPlayer.value) {
+            audioPlayer.value.pause()
+            isPlaying.value = false
+          }
+        })
+
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          playPrevious()
+        })
+
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          playNext()
+        })
+
+        // Watch para actualizar metadata cuando cambie la canción
+        watch(currentSong, (song) => {
+          if (song && 'mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: song.title || 'Sin título',
+              artist: playlistName.value,
+              album: 'Music List PWA',
+              artwork: [
+                {
+                  src: 'https://foofurbot.eines.net/static/img/foofurbot-logo.png',
+                  sizes: '512x512',
+                  type: 'image/png'
+                }
+              ]
+            })
+          }
+        }, { immediate: true })
+      }
     }
 
     const loadFromStorage = () => {
@@ -459,10 +505,17 @@ export default {
       
       if (isPlaying.value) {
         audioPlayer.value.pause()
+        isPlaying.value = false
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'paused'
+        }
       } else {
         audioPlayer.value.play()
+        isPlaying.value = true
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'playing'
+        }
       }
-      isPlaying.value = !isPlaying.value
     }
 
     const playNext = () => {
@@ -472,6 +525,9 @@ export default {
           if (audioPlayer.value) {
             audioPlayer.value.play()
             isPlaying.value = true
+            if ('mediaSession' in navigator) {
+              navigator.mediaSession.playbackState = 'playing'
+            }
           }
         })
       }
@@ -484,6 +540,9 @@ export default {
           if (audioPlayer.value) {
             audioPlayer.value.play()
             isPlaying.value = true
+            if ('mediaSession' in navigator) {
+              navigator.mediaSession.playbackState = 'playing'
+            }
           }
         })
       }
