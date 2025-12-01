@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # Permite ejecución manual
+
+# Permisos para el token de GitHub
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Concurrencia para evitar múltiples despliegues simultáneos
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Instalar dependencias
+      run: npm ci
+    
+    - name: Construir aplicación
+      env:
+        NODE_ENV: production
+        VITE_BASE_URL: /${{ github.event.repository.name }}/
+      run: npm run build
+    
+    - name: Configurar GitHub Pages
+      uses: actions/configure-pages@v4
+    
+    - name: Subir artefactos
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist'
+    
+    - name: Desplegar a GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
