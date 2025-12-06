@@ -166,7 +166,7 @@
                     <div v-if="availableVoices.length > 0" class="mt-3">
                       <label class="form-label small">
                         <i class="bi bi-mic me-1"></i>
-                        Voz del anuncio:
+                        Voz del título:
                       </label>
                       <select 
                         v-model="selectedVoiceIndex" 
