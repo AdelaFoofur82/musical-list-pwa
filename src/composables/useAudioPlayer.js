@@ -365,6 +365,12 @@ export function useAudioPlayer() {
     await playTrackWithTTS(song, playerElement, onEnd)
   }
 
+  const restartPlaylist = async () => {
+    console.log('🔄 Reiniciando playlist desde el inicio');
+    playState.restarting = true;
+    playState.trackIndex = 0;
+  }
+
   /**
    * Limpiar cache de preload (ya no se usa, mantenido por compatibilidad)
    */
@@ -465,6 +471,7 @@ export function useAudioPlayer() {
     pause,
     resume,
     restart,
+    restartPlaylist,
     clearPreloadCache,
     playPreview,
     stopPreview

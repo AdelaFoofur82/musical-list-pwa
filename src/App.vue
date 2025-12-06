@@ -119,14 +119,6 @@
                 </div>
               </div>
               
-              <!-- Elemento de audio SIEMPRE presente (aunque oculto si no hay canciones) -->
-              <audio 
-                ref="audioPlayer"
-                controls
-                class="w-100 d-none"
-                preload="none"
-              ></audio>
-              
               <!-- Reproductor ÚNICO (visible en ambos modos) -->
               <div v-if="songs.length > 0" class="card bg-dark text-white mb-4">
                 <div class="card-body">
@@ -141,18 +133,22 @@
                       <small v-if="currentSong">{{ currentSong.title || 'Canción actual' }}</small>
                     </div>
                     
-                    <!-- Mostrar controles solo cuando hay canciones -->
-                    <div class="bg-secondary p-2 rounded mb-2" style="min-height: 54px;">
-                      <div class="text-center text-white-50 small">
-                        Controles de audio
-                      </div>
-                    </div>
+                    <!-- Elemento de audio con controles nativos -->
+                    <audio 
+                      ref="audioPlayer"
+                      controls
+                      class="w-100"
+                      preload="none"
+                    ></audio>
                     
                     <div class="d-flex justify-content-center mt-3">
-                      <button @click="playPrevious" class="btn btn-outline-light btn-sm mx-2" :disabled="!hasPrevious">
+                      <button @click="restartPlaylist" class="btn btn-outline-warning btn-sm mx-1" title="Volver al inicio de la lista">
+                        <i class="bi bi-skip-start-fill"></i>
+                      </button>
+                      <button @click="playPrevious" class="btn btn-outline-light btn-sm mx-1" :disabled="!hasPrevious">
                         <i class="bi bi-skip-backward"></i>
                       </button>
-                      <button @click="restartTrack" class="btn btn-outline-light btn-sm mx-1" :disabled="!currentSong" title="Reiniciar desde el inicio">
+                      <button @click="restartTrack" class="btn btn-outline-light btn-sm mx-1" :disabled="!currentSong" title="Reiniciar canción actual">
                         <i class="bi bi-arrow-clockwise"></i>
                       </button>
                       <button v-if="!(isPlaying || isPlayingTTS)" @click="play" class="btn btn-light btn-sm mx-1">
@@ -161,7 +157,7 @@
                       <button v-else @click="pause" class="btn btn-light btn-sm mx-1">
                         <i class="bi bi-pause"></i>
                       </button>
-                      <button @click="playNext" class="btn btn-outline-light btn-sm mx-2" :disabled="!hasNext">
+                      <button @click="playNext" class="btn btn-outline-light btn-sm mx-1" :disabled="!hasNext">
                         <i class="bi bi-skip-forward"></i>
                       </button>
                     </div>
@@ -188,6 +184,14 @@
                   </div>
                 </div>
               </div>
+              
+              <!-- Audio invisible para preview cuando no hay canciones -->
+              <audio 
+                v-if="songs.length === 0"
+                ref="audioPlayer"
+                class="d-none"
+                preload="none"
+              ></audio>
               
               <!-- Campo nombre de playlist en modo edición -->
               <div v-if="!readOnlyMode" class="mb-4">
@@ -644,6 +648,7 @@ export default {
       pause: pauseAudio,
       resume: resumeAudio,
       restart: restartAudio,
+      restartPlaylist: restartPlaylistAudio,
       playState,        // Estado único de reproducción
       playPreview,
       stopPreview,
@@ -1164,6 +1169,35 @@ export default {
       }
     }
 
+    const restartPlaylist = async () => {
+      if (!audioPlayer.value || songs.value.length === 0) return
+      
+      console.log('Reiniciando playlist desde el inicio...')
+
+      restartPlaylistAudio();
+      
+      // Detener cualquier reproducción activa
+      await pause()
+      
+      // Volver al inicio de la lista
+      currentSongIndex.value = 0
+      await nextTick()
+      
+      // Reproducir desde la primera canción
+      if (currentSong.value) {
+        await playTrackWithTTS(
+          currentSong.value,
+          audioPlayer.value,
+          () => playNext(),
+          currentSongIndex.value
+        )
+        
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'playing'
+        }
+      }
+    }
+
     const playNext = async () => {
       if (hasNext.value) {
         // Detener cualquier reproducción activa
@@ -1453,6 +1487,7 @@ export default {
       play,
       pause,
       restartTrack,
+      restartPlaylist,
       playNext,
       playPrevious,
       copyShareLink,
