@@ -1,8 +1,20 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
+import fs from 'fs'
 
 export default defineConfig({
+  server: {
+    host: '0.0.0.0', // Permite acceso desde la red local
+    port: 3000,
+    https: {
+      key: fs.readFileSync('D:/IONOSHiDrive/users/adela82/adela/certs/localhost-key.pem'),
+      cert: fs.readFileSync('D:/IONOSHiDrive/users/adela82/adela/certs/localhost.pem'),
+    },
+    // Opcional: usar un dominio personalizado con hosts file
+    // Añade a C:\Windows\System32\drivers\etc\hosts:
+    // 127.0.0.1 dev.sambango.local
+  },
   plugins: [
     vue(),
     VitePWA({

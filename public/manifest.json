@@ -1,7 +1,7 @@
 {
-  "name": "Music List PWA",
-  "short_name": "MusicList",
-  "description": "Crea y comparte listas de reproducción musical",
+  "name": "Sambango Prepa",
+  "short_name": "SambangoPrepa",
+  "description": "Aplicación para calentar antes de los ensayos de Sambango",
   "theme_color": "#6f42c1",
   "background_color": "#ffffff",
   "display": "standalone",
