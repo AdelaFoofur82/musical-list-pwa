@@ -8,12 +8,8 @@
           Sambango Prepa
         </span>
         <div class="d-flex gap-2 align-items-center">
-          <a 
-            href="https://github.com/AdelaFoofur82/sambango-prepa"   
-            target="_blank"
-            class="btn btn-sm btn-outline-light"
-            title="Ver código fuente"
-          >
+          <a href="https://github.com/AdelaFoofur82/sambango-prepa" target="_blank" class="btn btn-sm btn-outline-light"
+            title="Ver código fuente">
             <i class="bi bi-github"></i>
           </a>
           <button v-if="showInstallButton" @click="installPWA" class="btn btn-sm btn-light">
@@ -26,7 +22,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-          
+
           <!-- Gestor de Playlists (solo en modo edición) -->
           <div v-if="!readOnlyMode" class="card shadow border-0 mb-3">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -34,26 +30,19 @@
                 <i class="bi bi-collection-play me-2"></i>
                 Mis Listas
               </h5>
-              <button 
-                @click="showPlaylistManager = !showPlaylistManager" 
-                class="btn btn-sm btn-outline-primary"
-              >
+              <button @click="showPlaylistManager = !showPlaylistManager" class="btn btn-sm btn-outline-primary">
                 <i class="bi" :class="showPlaylistManager ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                 {{ showPlaylistManager ? 'Ocultar' : 'Gestionar' }}
               </button>
             </div>
-            
+
             <div v-show="showPlaylistManager" class="card-body">
               <!-- Lista de playlists -->
               <div class="list-group mb-3">
-                <div 
-                  v-for="playlist in playlists" 
-                  :key="playlist.id"
+                <div v-for="playlist in playlists" :key="playlist.id"
                   class="list-group-item d-flex justify-content-between align-items-center"
-                  :class="{ 'active': playlist.id === activePlaylistId }"
-                  @click="selectPlaylist(playlist.id)"
-                  style="cursor: pointer;"
-                >
+                  :class="{ 'active': playlist.id === activePlaylistId }" @click="selectPlaylist(playlist.id)"
+                  style="cursor: pointer;">
                   <div class="d-flex align-items-center">
                     <i class="bi bi-music-note-list me-2"></i>
                     <div>
@@ -62,34 +51,21 @@
                     </div>
                   </div>
                   <div class="btn-group btn-group-sm" @click.stop>
-                    <button 
-                      @click="renamePlaylist(playlist.id)" 
-                      class="btn btn-outline-secondary"
-                      title="Renombrar"
-                    >
+                    <button @click="renamePlaylist(playlist.id)" class="btn btn-outline-secondary" title="Renombrar">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    <button 
-                      @click="deletePlaylist(playlist.id)" 
-                      class="btn btn-outline-danger"
-                      :disabled="playlists.length === 1"
-                      title="Eliminar"
-                    >
+                    <button @click="deletePlaylist(playlist.id)" class="btn btn-outline-danger"
+                      :disabled="playlists.length === 1" title="Eliminar">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>
                 </div>
               </div>
-              
+
               <!-- Crear nueva playlist -->
               <div class="input-group">
-                <input 
-                  v-model="newPlaylistName"
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Nueva lista de música..."
-                  @keyup.enter="createPlaylist"
-                >
+                <input v-model="newPlaylistName" type="text" class="form-control" placeholder="Nueva lista de música..."
+                  @keyup.enter="createPlaylist">
                 <button @click="createPlaylist" class="btn btn-purple">
                   <i class="bi bi-plus-circle me-1"></i>
                   Crear
@@ -97,7 +73,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Card principal -->
           <div class="card shadow border-0">
             <div class="card-body p-4">
@@ -105,7 +81,7 @@
                 <i class="bi bi-music-note-list me-2"></i>
                 {{ readOnlyMode ? playlistName : playlistName }}
               </h2>
-              
+
               <!-- Mensaje de modo solo lectura -->
               <div v-if="readOnlyMode" class="alert alert-info mb-4">
                 <div class="d-flex justify-content-between align-items-center">
@@ -118,7 +94,7 @@
                   </button>
                 </div>
               </div>
-              
+
               <!-- Reproductor ÚNICO (visible en ambos modos) -->
               <div v-if="songs.length > 0" class="card bg-dark text-white mb-4">
                 <div class="card-body">
@@ -126,29 +102,26 @@
                     <i class="bi bi-play-btn me-2"></i>
                     Reproductor
                   </h5>
-                  
+
                   <div class="mb-3">
                     <div class="d-flex justify-content-between mb-1">
                       <small>Ahora sonando:</small>
                       <small v-if="currentSong">{{ currentSong.title || 'Canción actual' }}</small>
                     </div>
-                    
+
                     <!-- Elemento de audio con controles nativos -->
-                    <audio 
-                      ref="audioPlayer"
-                      controls
-                      class="w-100"
-                      preload="none"
-                    ></audio>
-                    
+                    <audio ref="audioPlayer" controls class="w-100" preload="none"></audio>
+
                     <div class="d-flex justify-content-center mt-3">
-                      <button @click="restartPlaylist" class="btn btn-outline-warning btn-sm mx-1" title="Volver al inicio de la lista">
+                      <button @click="restartPlaylist" class="btn btn-outline-warning btn-sm mx-1"
+                        title="Volver al inicio de la lista">
                         <i class="bi bi-skip-start-fill"></i>
                       </button>
                       <button @click="playPrevious" class="btn btn-outline-light btn-sm mx-1" :disabled="!hasPrevious">
                         <i class="bi bi-skip-backward"></i>
                       </button>
-                      <button @click="restartTrack" class="btn btn-outline-light btn-sm mx-1" :disabled="!currentSong" title="Reiniciar canción actual">
+                      <button @click="restartTrack" class="btn btn-outline-light btn-sm mx-1" :disabled="!currentSong"
+                        title="Reiniciar canción actual">
                         <i class="bi bi-arrow-clockwise"></i>
                       </button>
                       <button v-if="!(isPlaying || isPlayingTTS)" @click="play" class="btn btn-light btn-sm mx-1">
@@ -161,22 +134,15 @@
                         <i class="bi bi-skip-forward"></i>
                       </button>
                     </div>
-                    
+
                     <!-- Selector de voz TTS -->
                     <div v-if="availableVoices.length > 0" class="mt-3">
                       <label class="form-label small">
                         <i class="bi bi-mic me-1"></i>
                         Voz del título:
                       </label>
-                      <select 
-                        v-model="selectedVoiceIndex" 
-                        class="form-select form-select-sm"
-                      >
-                        <option 
-                          v-for="(voice, index) in availableVoices" 
-                          :key="index" 
-                          :value="index"
-                        >
+                      <select v-model="selectedVoiceIndex" class="form-select form-select-sm">
+                        <option v-for="(voice, index) in availableVoices" :key="index" :value="index">
                           {{ voice.name }} ({{ voice.lang }})
                         </option>
                       </select>
@@ -184,50 +150,32 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Audio invisible para preview cuando no hay canciones -->
-              <audio 
-                v-if="songs.length === 0"
-                ref="audioPlayer"
-                class="d-none"
-                preload="none"
-              ></audio>
-              
+              <audio v-if="songs.length === 0" ref="audioPlayer" class="d-none" preload="none"></audio>
+
               <!-- Campo nombre de playlist en modo edición -->
               <div v-if="!readOnlyMode" class="mb-4">
                 <label class="form-label fw-bold">
                   <i class="bi bi-card-heading me-1"></i>
                   Nombre de tu lista
                 </label>
-                <input 
-                  type="text" 
-                  v-model="playlistName"
-                  @input="saveToStorage"
-                  class="form-control form-control-lg"
-                  placeholder="Mi Lista de Música"
-                >
+                <input type="text" v-model="playlistName" @input="saveToStorage" class="form-control form-control-lg"
+                  placeholder="Mi Lista de Música">
               </div>
-              
+
               <!-- Formulario SIMPLE para agregar canciones -->
               <div v-if="!readOnlyMode" class="mb-4">
                 <!-- Toggle para cambiar entre URL manual y explorador -->
                 <div class="d-flex justify-content-center mb-3">
                   <div class="btn-group" role="group">
-                    <button 
-                      type="button" 
-                      class="btn" 
-                      :class="useUrlInput ? 'btn-primary' : 'btn-outline-primary'"
-                      @click="useUrlInput = true"
-                    >
+                    <button type="button" class="btn" :class="useUrlInput ? 'btn-primary' : 'btn-outline-primary'"
+                      @click="useUrlInput = true">
                       <i class="bi bi-link-45deg me-1"></i>
                       URL Manual
                     </button>
-                    <button 
-                      type="button" 
-                      class="btn" 
-                      :class="!useUrlInput ? 'btn-primary' : 'btn-outline-primary'"
-                      @click="toggleInputMode"
-                    >
+                    <button type="button" class="btn" :class="!useUrlInput ? 'btn-primary' : 'btn-outline-primary'"
+                      @click="toggleInputMode">
                       <i class="bi bi-folder-music me-1"></i>
                       Explorar Sambango
                     </button>
@@ -242,16 +190,12 @@
                         <i class="bi bi-music-note-list me-2"></i>
                         Explorador de Ritmos Sambango
                       </h6>
-                      <button 
-                        @click="handleReloadSambangoTree"
-                        class="btn btn-sm btn-outline-light"
-                        :disabled="loadingSambangoTree"
-                        title="Recargar biblioteca"
-                      >
+                      <button @click="handleReloadSambangoTree" class="btn btn-sm btn-outline-light"
+                        :disabled="loadingSambangoTree" title="Recargar biblioteca">
                         <i class="bi bi-arrow-clockwise"></i>
                       </button>
                     </div>
-                    
+
                     <!-- Breadcrumb de navegación -->
                     <nav v-if="currentPath.length > 0" aria-label="breadcrumb" class="mb-3">
                       <ol class="breadcrumb mb-0">
@@ -260,18 +204,10 @@
                             <i class="bi bi-house-fill"></i>
                           </a>
                         </li>
-                        <li 
-                          v-for="(part, index) in currentPath" 
-                          :key="index"
-                          class="breadcrumb-item text-white"
-                          :class="{'active': index === currentPath.length - 1}"
-                        >
-                          <a 
-                            v-if="index < currentPath.length - 1"
-                            href="#" 
-                            @click.prevent="handleNavigateToBreadcrumb(index)"
-                            class="text-decoration-none"
-                          >
+                        <li v-for="(part, index) in currentPath" :key="index" class="breadcrumb-item text-white"
+                          :class="{ 'active': index === currentPath.length - 1 }">
+                          <a v-if="index < currentPath.length - 1" href="#"
+                            @click.prevent="handleNavigateToBreadcrumb(index)" class="text-decoration-none">
                             {{ part }}
                           </a>
                           <span v-else>{{ part }}</span>
@@ -288,60 +224,39 @@
                     </div>
 
                     <!-- Lista de archivos y carpetas -->
-                    <div 
-                      v-else-if="getCurrentFolder" 
-                      ref="sambangoTreeContainer"
-                      class="list-group list-group-flush" 
-                      style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;"
-                    >
+                    <div v-else-if="getCurrentFolder" ref="sambangoTreeContainer" class="list-group list-group-flush"
+                      style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
                       <!-- Botón volver si no estamos en raíz -->
-                      <button 
-                        v-if="currentPath.length > 0"
-                        @click="handleNavigateBack"
+                      <button v-if="currentPath.length > 0" @click="handleNavigateBack"
                         class="list-group-item list-group-item-action bg-secondary text-white border-dark sticky-top"
-                        style="z-index: 1;"
-                      >
+                        style="z-index: 1;">
                         <i class="bi bi-arrow-left me-2"></i>
                         Volver
                       </button>
 
                       <!-- Carpetas -->
-                      <button
-                        v-for="item in (getCurrentFolder || []).filter(i => i.type === 'folder')"
-                        :key="item.name"
+                      <button v-for="item in (getCurrentFolder || []).filter(i => i.type === 'folder')" :key="item.name"
                         @click="handleNavigateToFolder(item.name)"
-                        class="list-group-item list-group-item-action bg-dark text-white border-dark"
-                      >
+                        class="list-group-item list-group-item-action bg-dark text-white border-dark">
                         <i class="bi bi-folder-fill text-warning me-2"></i>
                         {{ item.name }}
                       </button>
 
                       <!-- Archivos MP3 -->
-                      <div
-                        v-for="item in (getCurrentFolder || []).filter(i => i.type === 'file')"
-                        :key="item.url"
+                      <div v-for="item in (getCurrentFolder || []).filter(i => i.type === 'file')" :key="item.url"
                         class="list-group-item list-group-item-action bg-dark text-white border-dark d-flex justify-content-between align-items-center"
-                        :class="{'active': selectedMp3?.url === item.url}"
-                      >
+                        :class="{ 'active': selectedMp3?.url === item.url }">
                         <div @click="selectMp3File(item)" class="flex-grow-1" style="cursor: pointer;">
                           <i class="bi bi-file-music text-info me-2"></i>
                           {{ item.title }}
                         </div>
                         <div class="btn-group btn-group-sm" @click.stop>
-                          <button 
-                            v-if="previewingUrl !== item.url"
-                            @click="handlePlayPreview(item.url)"
-                            class="btn btn-outline-light"
-                            title="Preview"
-                          >
+                          <button v-if="previewingUrl !== item.url" @click="handlePlayPreview(item.url)"
+                            class="btn btn-outline-light" title="Preview">
                             <i class="bi bi-play-fill"></i>
                           </button>
-                          <button 
-                            v-if="previewingUrl === item.url"
-                            @click="handleStopPreview()"
-                            class="btn btn-outline-danger"
-                            title="Stop Preview"
-                          >
+                          <button v-if="previewingUrl === item.url" @click="handleStopPreview()"
+                            class="btn btn-outline-danger" title="Stop Preview">
                             <i class="bi bi-stop-fill"></i>
                           </button>
                         </div>
@@ -367,78 +282,54 @@
                     <i class="bi bi-link-45deg me-1"></i>
                     URL de la canción
                   </label>
-                  <input 
-                    type="url" 
-                    v-model="newSongUrl"
-                    class="form-control form-control-lg"
-                    :class="{'bg-light': !useUrlInput && selectedMp3}"
-                    placeholder="https://ejemplo.com/cancion.mp3"
-                    :readonly="!useUrlInput"
-                    @keyup.enter="addSong"
-                  >
+                  <input type="url" v-model="newSongUrl" class="form-control form-control-lg"
+                    :class="{ 'bg-light': !useUrlInput && selectedMp3 }" placeholder="https://ejemplo.com/cancion.mp3"
+                    :readonly="!useUrlInput" @keyup.enter="addSong">
                 </div>
-                
+
                 <div class="mb-3">
                   <label class="form-label fw-bold">
                     <i class="bi bi-card-text me-1"></i>
                     Título (opcional)
                   </label>
-                  <input 
-                    type="text" 
-                    v-model="newSongTitle"
-                    class="form-control"
-                    :class="{'bg-light': !useUrlInput && selectedMp3}"
-                    placeholder="Nombre de la canción"
-                    @keyup.enter="addSong"
-                  >
+                  <input type="text" v-model="newSongTitle" class="form-control"
+                    :class="{ 'bg-light': !useUrlInput && selectedMp3 }" placeholder="Nombre de la canción"
+                    @keyup.enter="addSong">
                 </div>
-                
+
                 <button @click="addSong" class="btn btn-purple btn-lg w-100">
                   <i class="bi bi-plus-circle me-2"></i>
                   Agregar a la Lista
                 </button>
-                
+
                 <div class="form-text mt-2 text-center">
                   <i class="bi bi-info-circle me-1"></i>
                   También puedes compartir URLs desde otras apps
                 </div>
               </div>
-              
+
               <!-- Lista de canciones VISIBLE -->
               <div v-if="songs.length > 0" class="mb-4">
                 <h4 class="mb-3">
                   <i class="bi bi-list-ul me-2"></i>
                   {{ readOnlyMode ? 'Lista de Canciones' : 'Tu Lista' }} ({{ songs.length }} canciones)
                 </h4>
-                
+
                 <div class="list-group">
-                  <div 
-                    v-for="(song, index) in songs" 
-                    :key="index"
-                    class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0"
-                    :class="{ 
-                      'active': currentSongIndex === index, 
+                  <div v-for="(song, index) in songs" :key="index"
+                    class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 cursor-pointer"
+                    :class="{
+                      'active': currentSongIndex === index,
                       'dragging': draggedIndex === index,
                       'drag-over': dragOverIndex === index && draggedIndex !== index
-                    }"
-                    @click="currentSongIndex = index"
-                    :draggable="false"
-                    @dragover="onDragOver($event, index)"
-                    @dragleave="onDragLeave($event)"
-                    @drop.prevent="onDrop($event, index)"
-                  >
+                    }" @click="playIndex(index, false)" :draggable="false" @dragover="onDragOver($event, index)"
+                    @dragleave="onDragLeave($event)" @drop.prevent="onDrop($event, index)">
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex align-items-center flex-grow-1">
                         <!-- Handle de arrastre (solo en modo edición) -->
-                        <span 
-                          v-if="!readOnlyMode"
-                          class="drag-handle me-2"
-                          draggable="true"
-                          @dragstart="onDragStart($event, index)"
-                          @dragend="onDragEnd"
-                          @click.stop
-                          title="Arrastra para reordenar"
-                        >
+                        <span v-if="!readOnlyMode" class="drag-handle me-2" draggable="true"
+                          @dragstart="onDragStart($event, index)" @dragend="onDragEnd" @click.stop
+                          title="Arrastra para reordenar">
                           <i class="bi bi-grip-vertical"></i>
                         </span>
                         <span class="badge bg-purple me-3">{{ index + 1 }}</span>
@@ -449,68 +340,38 @@
                           </small>
                         </div>
                       </div>
-                      
+
                       <div class="d-flex align-items-center gap-2">
                         <!-- Botón de caché -->
-                        <button 
-                          v-if="getCacheStatus(song.url) === 'caching'"
-                          class="btn btn-sm btn-outline-primary"
-                          disabled
-                          title="Cacheando..."
-                          @click.stop
-                        >
+                        <button v-if="getCacheStatus(song.url) === 'caching'" class="btn btn-sm btn-outline-primary"
+                          disabled title="Cacheando..." @click.stop>
                           <span class="spinner-border spinner-border-sm me-1"></span>
                           <i class="bi bi-download"></i>
                         </button>
-                        <button 
-                          v-else-if="getCacheStatus(song.url) === 'queued'"
-                          class="btn btn-sm btn-outline-secondary"
-                          disabled
-                          title="En cola para cachear"
-                          @click.stop
-                        >
+                        <button v-else-if="getCacheStatus(song.url) === 'queued'"
+                          class="btn btn-sm btn-outline-secondary" disabled title="En cola para cachear" @click.stop>
                           <i class="bi bi-clock"></i>
                         </button>
-                        <button 
-                          v-else-if="getCacheStatus(song.url) === 'cached'"
-                          class="btn btn-sm btn-outline-success"
-                          @click.stop="recacheAudio(song.url, song.title)"
-                          title="Recargar caché"
-                        >
+                        <button v-else-if="getCacheStatus(song.url) === 'cached'" class="btn btn-sm btn-outline-success"
+                          @click.stop="recacheAudio(song.url, song.title)" title="Recargar caché">
                           <i class="bi bi-arrow-clockwise"></i>
                         </button>
-                        <button 
-                          v-else
-                          class="btn btn-sm btn-outline-info"
-                          @click.stop="audioPlayerComposable.cacheAudio(song.url, song.title)"
-                          title="Cachear ahora"
-                        >
+                        <button v-else class="btn btn-sm btn-outline-info"
+                          @click.stop="audioPlayerComposable.cacheAudio(song.url, song.title)" title="Cachear ahora">
                           <i class="bi bi-download"></i>
                         </button>
-                        
+
                         <!-- Botones de orden (solo en modo edición) -->
                         <div v-if="!readOnlyMode" class="btn-group btn-group-sm">
-                          <button 
-                            class="btn btn-outline-secondary"
-                            @click.stop="moveSongUp(index)"
-                            :disabled="index === 0"
-                            title="Mover arriba"
-                          >
+                          <button class="btn btn-outline-secondary" @click.stop="moveSongUp(index)"
+                            :disabled="index === 0" title="Mover arriba">
                             <i class="bi bi-arrow-up"></i>
                           </button>
-                          <button 
-                            class="btn btn-outline-secondary"
-                            @click.stop="moveSongDown(index)"
-                            :disabled="index === songs.length - 1"
-                            title="Mover abajo"
-                          >
+                          <button class="btn btn-outline-secondary" @click.stop="moveSongDown(index)"
+                            :disabled="index === songs.length - 1" title="Mover abajo">
                             <i class="bi bi-arrow-down"></i>
                           </button>
-                          <button 
-                            class="btn btn-outline-danger"
-                            @click.stop="removeSong(index)"
-                            title="Eliminar"
-                          >
+                          <button class="btn btn-outline-danger" @click.stop="removeSong(index)" title="Eliminar">
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
@@ -518,14 +379,14 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div v-if="!readOnlyMode" class="text-end mt-2">
                   <button @click="clearPlaylist" class="btn btn-sm btn-outline-danger">
                     <i class="bi bi-trash me-1"></i> Limpiar todo
                   </button>
                 </div>
               </div>
-              
+
               <!-- Compartir lista SIMPLE (solo en modo edición) -->
               <div v-if="!readOnlyMode" class="mt-4">
                 <div class="d-grid gap-2">
@@ -534,7 +395,7 @@
                     <span class="ms-2">{{ linkCopied ? '¡Enlace copiado!' : 'Copiar enlace de la lista' }}</span>
                   </button>
                 </div>
-                
+
                 <div class="text-center mt-2">
                   <small class="text-muted">
                     <i class="bi bi-info-circle me-1"></i>
@@ -542,7 +403,7 @@
                   </small>
                 </div>
               </div>
-              
+
               <!-- Instrucciones -->
               <div v-if="!readOnlyMode" class="alert alert-info mt-4">
                 <h5><i class="bi bi-lightbulb me-2"></i> Cómo usar:</h5>
@@ -556,14 +417,10 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Info PWA -->
-          <div 
-            class="card mt-4 border-0 shadow-sm" 
-            :class="{'cursor-pointer': showInstallButton}"
-            @click="showInstallButton ? installPWA() : null"
-            :style="showInstallButton ? 'cursor: pointer;' : ''"
-          >
+          <div class="card mt-4 border-0 shadow-sm" :class="{ 'cursor-pointer': showInstallButton }"
+            @click="showInstallButton ? installPWA() : null" :style="showInstallButton ? 'cursor: pointer;' : ''">
             <div class="card-body text-center">
               <i class="bi bi-phone display-4 text-purple mb-3"></i>
               <h5>Instala como App</h5>
@@ -575,7 +432,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Toast simple -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
       <div ref="toast" class="toast" role="alert">
@@ -598,14 +455,14 @@ import { useAudioPlayer } from './composables/useAudioPlayer.js'
 
 export default {
   name: 'App',
-  
+
   setup() {
     // Estado para múltiples playlists
     const playlists = ref([]) // Array de {id, name, songs}
     const activePlaylistId = ref(null) // ID de la playlist activa
     const showPlaylistManager = ref(false)
     const newPlaylistName = ref('')
-    
+
     // Estado básico (ahora derivado de la playlist activa)
     const readOnlyMode = ref(false)
     const newSongUrl = ref('')
@@ -618,11 +475,11 @@ export default {
     const bootstrapToast = ref(null)
     const linkCopied = ref(false)
     const sambangoTreeContainer = ref(null)
-    
+
     // Estado para drag and drop
     const draggedIndex = ref(null)
     const dragOverIndex = ref(null)
-    
+
     // Estado para explorador de archivos Sambango
     const useUrlInput = ref(true) // true = URL manual, false = árbol
     const previewingUrl = ref(null) // URL del archivo en preview
@@ -639,12 +496,12 @@ export default {
       clearSelection,
       reloadTree
     } = useSambangoTree()
-    
+
     // Composable para audio con TTS
     const audioPlayerComposable = useAudioPlayer()
-    const { 
-      preloadTrack, 
-      playTrackWithTTS, 
+    const {
+      preloadTrack,
+      playTrackWithTTS,
       pause: pauseAudio,
       resume: resumeAudio,
       restart: restartAudio,
@@ -661,17 +518,17 @@ export default {
       currentlyCaching,
       cachedUrls
     } = audioPlayerComposable
-    
+
     // Computed para compatibilidad con el template
     const isPlaying = computed(() => playState.playing && playState.type === 'audio')
     const isPlayingTTS = computed(() => playState.playing && playState.type === 'tts')
     const isPlayingPreview = computed(() => playState.playing && playState.type === 'preview')
 
     // Computed properties
-    const activePlaylist = computed(() => 
+    const activePlaylist = computed(() =>
       playlists.value.find(p => p.id === activePlaylistId.value) || null
     )
-    
+
     const songs = computed(() => activePlaylist.value?.songs || [])
     const playlistName = computed({
       get: () => activePlaylist.value?.name || 'Mi Lista de Música',
@@ -682,7 +539,7 @@ export default {
         }
       }
     })
-    
+
     const currentSong = computed(() => songs.value[currentSongIndex.value])
     const hasPrevious = computed(() => currentSongIndex.value > 0)
     const hasNext = computed(() => currentSongIndex.value < songs.value.length - 1)
@@ -708,9 +565,9 @@ export default {
       checkUrlForPlaylist()
       handleShareTarget()
       handleLoadSambangoTree()
-      
+
       // Inicializar IndexedDB para caché de audio
-      audioPlayerComposable.initDB().catch(err => 
+      audioPlayerComposable.initDB().catch(err =>
         console.error('Error inicializando DB:', err)
       )
     })
@@ -791,7 +648,7 @@ export default {
         if (saved) {
           playlists.value = JSON.parse(saved)
         }
-        
+
         // Si no hay playlists, crear una por defecto
         if (playlists.value.length === 0) {
           const defaultPlaylist = {
@@ -856,7 +713,7 @@ export default {
         clearSelection()
       }
     }
-    
+
     // Wrappers para navegación con scroll reset
     const scrollToTop = () => {
       nextTick(() => {
@@ -865,22 +722,22 @@ export default {
         }
       })
     }
-    
+
     const handleNavigateToFolder = (folderName) => {
       navigateToFolder(folderName)
       scrollToTop()
     }
-    
+
     const handleNavigateBack = () => {
       navigateBack()
       scrollToTop()
     }
-    
+
     const handleNavigateToRoot = () => {
       currentPath.value = []
       scrollToTop()
     }
-    
+
     const handleNavigateToBreadcrumb = (index) => {
       currentPath.value = currentPath.value.slice(0, index + 1)
       scrollToTop()
@@ -933,16 +790,16 @@ export default {
         showToast('No puedes eliminar la única playlist', 'warning')
         return
       }
-      
+
       const playlist = playlists.value.find(p => p.id === playlistId)
       if (confirm(`¿Seguro que quieres eliminar "${playlist.name}"?`)) {
         playlists.value = playlists.value.filter(p => p.id !== playlistId)
-        
+
         // Si era la activa, seleccionar otra
         if (activePlaylistId.value === playlistId) {
           activePlaylistId.value = playlists.value[0].id
         }
-        
+
         saveToStorage()
         showToast('Playlist eliminada', 'info')
       }
@@ -960,11 +817,11 @@ export default {
 
     const handleShareTarget = () => {
       if (!activePlaylist.value) return
-      
+
       const urlParams = new URLSearchParams(window.location.search)
       const sharedUrl = urlParams.get('url')
       const sharedText = urlParams.get('text')
-      
+
       if (sharedUrl) {
         const title = urlParams.get('title') || sharedText || 'Canción compartida'
         activePlaylist.value.songs.push({
@@ -973,7 +830,7 @@ export default {
         })
         saveToStorage()
         showToast('¡Canción agregada desde compartir!', 'success')
-        
+
         // Limpiar URL
         window.history.replaceState({}, document.title, window.location.pathname)
       }
@@ -982,27 +839,27 @@ export default {
     const checkUrlForPlaylist = () => {
       const urlParams = new URLSearchParams(window.location.search)
       const playlistParam = urlParams.get('playlist')
-      
+
       if (playlistParam) {
         try {
           // Decodificar desde base64 (con soporte UTF-8)
           const decoded = decodeURIComponent(atob(playlistParam))
           const parsed = JSON.parse(decoded)
-          
+
           // Crear playlist temporal con los datos compartidos
           const sharedPlaylist = {
             id: Date.now(),
             name: parsed.name || 'Lista Compartida',
             songs: parsed.songs || parsed // Compatibilidad con formato antiguo
           }
-          
+
           if (Array.isArray(sharedPlaylist.songs)) {
             playlists.value = [sharedPlaylist]
             activePlaylistId.value = sharedPlaylist.id
             readOnlyMode.value = true
-            
+
             showToast('Lista cargada - Modo solo reproducción', 'info')
-            
+
             // NO limpiar URL en modo solo lectura para mantener el contexto
           }
         } catch (e) {
@@ -1015,10 +872,10 @@ export default {
     // Métodos principales
     const addSong = () => {
       if (!activePlaylist.value) return
-      
+
       const url = newSongUrl.value.trim()
       const title = newSongTitle.value.trim() || `Canción ${activePlaylist.value.songs.length + 1}`
-      
+
       if (url) {
         activePlaylist.value.songs.push({
           url: url,
@@ -1028,7 +885,7 @@ export default {
         newSongTitle.value = ''
         saveToStorage()
         showToast('Canción agregada', 'success')
-        
+
         // Enfocar el campo de URL para seguir agregando
         setTimeout(() => {
           document.querySelector('input[type="url"]')?.focus()
@@ -1048,7 +905,7 @@ export default {
     const moveSongUp = (index) => {
       if (!activePlaylist.value || index === 0) return
       const songs = activePlaylist.value.songs
-      ;[songs[index], songs[index - 1]] = [songs[index - 1], songs[index]]
+        ;[songs[index], songs[index - 1]] = [songs[index - 1], songs[index]]
       if (currentSongIndex.value === index) currentSongIndex.value--
       saveToStorage()
     }
@@ -1057,14 +914,14 @@ export default {
       if (!activePlaylist.value) return
       const songs = activePlaylist.value.songs
       if (index >= songs.length - 1) return
-      ;[songs[index], songs[index + 1]] = [songs[index + 1], songs[index]]
+        ;[songs[index], songs[index + 1]] = [songs[index + 1], songs[index]]
       if (currentSongIndex.value === index) currentSongIndex.value++
       saveToStorage()
     }
 
     const togglePlay = async () => {
       if (!audioPlayer.value || !currentSong.value) return
-      
+
       if (isPlaying.value || isPlayingTTS.value) {
         // Pausar tanto TTS como audio
         pauseAudio(audioPlayer.value)
@@ -1089,31 +946,31 @@ export default {
         }
       }
     }
-    
+
     const pause = async () => {
       if (!audioPlayer.value) return
-      
+
       // Si estamos pausando un preview, limpiar el estado
       if (playState.type === 'preview') {
         previewingUrl.value = null
       }
-      
+
       // Llamar al pause del composable que maneja TODO
       pauseAudio(audioPlayer.value)
-      
+
       if ('mediaSession' in navigator) {
         navigator.mediaSession.playbackState = 'paused'
       }
     }
-    
+
     const play = async () => {
       if (!audioPlayer.value) return
-      
+
       // Si hay preview activo, detenerlo primero
       if (playState.type === 'preview') {
         handleStopPreview()
       }
-      
+
       // Si no hay canción seleccionada, comenzar desde el principio
       if (!currentSong.value) {
         if (songs.value.length > 0) {
@@ -1128,7 +985,7 @@ export default {
         }
         return
       }
-      
+
       // Si ya hay audio cargado y tiene src válido, reanudar
       if (audioPlayer.value.src && audioPlayer.value.src !== '' && audioPlayer.value.currentTime > 0 && playState.type !== 'preview') {
         try {
@@ -1148,7 +1005,7 @@ export default {
           currentSongIndex.value
         )
       }
-      
+
       if ('mediaSession' in navigator) {
         navigator.mediaSession.playbackState = 'playing'
       }
@@ -1157,13 +1014,13 @@ export default {
     const restartTrack = async () => {
       console.log('Reiniciando pista...')
       if (!currentSong.value || !audioPlayer.value) return
-      
+
       await restartAudio(
         currentSong.value,
         audioPlayer.value,
         () => playNext()
       )
-      
+
       if ('mediaSession' in navigator) {
         navigator.mediaSession.playbackState = 'playing'
       }
@@ -1171,18 +1028,18 @@ export default {
 
     const restartPlaylist = async () => {
       if (!audioPlayer.value || songs.value.length === 0) return
-      
+
       console.log('Reiniciando playlist desde el inicio...')
 
       restartPlaylistAudio();
-      
+
       // Detener cualquier reproducción activa
       await pause()
-      
+
       // Volver al inicio de la lista
       currentSongIndex.value = 0
       await nextTick()
-      
+
       // Reproducir desde la primera canción
       if (currentSong.value) {
         await playTrackWithTTS(
@@ -1191,7 +1048,7 @@ export default {
           () => playNext(),
           currentSongIndex.value
         )
-        
+
         if ('mediaSession' in navigator) {
           navigator.mediaSession.playbackState = 'playing'
         }
@@ -1200,54 +1057,52 @@ export default {
 
     const playNext = async () => {
       if (hasNext.value) {
-        // Detener cualquier reproducción activa
-        await pause()
-        
-        currentSongIndex.value++
-        await nextTick()
-        
-        if (audioPlayer.value && currentSong.value) {
-          // Precargar siguiente canción
-          await preloadTrack(currentSong.value, songs.value, currentSongIndex.value)
-          
-          // Reproducir con TTS
-          await playTrackWithTTS(
-            currentSong.value,
-            audioPlayer.value,
-            () => playNext(),
-            currentSongIndex.value
-          )
-          
-          if ('mediaSession' in navigator) {
-            navigator.mediaSession.playbackState = 'playing'
-          }
-        }
+        playIndex(currentSongIndex.value + 1)
       }
     }
 
     const playPrevious = async () => {
       if (hasPrevious.value) {
-        // Detener cualquier reproducción activa
-        await pause()
-        
-        currentSongIndex.value--
-        await nextTick()
-        
-        if (audioPlayer.value && currentSong.value) {
-          // Precargar canción anterior
-          await preloadTrack(currentSong.value, songs.value, currentSongIndex.value)
-          
-          // Reproducir con TTS
+        playIndex(currentSongIndex.value - 1)
+      }
+    }
+
+    const playIndex = async (index, withTTS = true) => {
+      if (!audioPlayer.value || index < 0 || index >= songs.value.length) return
+
+      // Detener cualquier reproducción activa
+      await pause()
+
+      currentSongIndex.value = index
+      await nextTick()
+
+      if (currentSong.value) {
+        // Precargar canción seleccionada
+        await preloadTrack(currentSong.value, songs.value, currentSongIndex.value)
+
+        // Reproducir con TTS
+        if (withTTS) {
           await playTrackWithTTS(
             currentSong.value,
             audioPlayer.value,
             () => playNext(),
             currentSongIndex.value
           )
-          
-          if ('mediaSession' in navigator) {
-            navigator.mediaSession.playbackState = 'playing'
+        } else {
+          // Reproducir directamente sin TTS
+          try {
+            playState.playing = true
+            playState.type = 'audio'
+            playState.trackIndex = currentSongIndex.value
+            audioPlayer.value.currentTime = 0
+            audioPlayer.value.play()
+          } catch (error) {
+            console.error('Error reproduciendo pista:', error)
           }
+        } 
+
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'playing'
         }
       }
     }
@@ -1257,7 +1112,7 @@ export default {
         showToast('Agrega canciones primero', 'warning')
         return
       }
-      
+
       try {
         // Generar hash desde JSON usando base64 (con soporte UTF-8)
         const playlistData = {
@@ -1268,7 +1123,7 @@ export default {
         // Codificar para soportar caracteres Unicode
         const encoded = btoa(encodeURIComponent(playlistString))
         const shareUrl = `${window.location.origin}${window.location.pathname}?playlist=${encoded}`
-        
+
         // Copiar al portapapeles
         try {
           await navigator.clipboard.writeText(shareUrl)
@@ -1283,16 +1138,16 @@ export default {
           document.execCommand('copy')
           document.body.removeChild(textarea)
         }
-        
+
         // Mostrar feedback visual
         linkCopied.value = true
         showToast('¡Enlace copiado al portapapeles!', 'success')
-        
+
         // Resetear el estado después de 3 segundos
         setTimeout(() => {
           linkCopied.value = false
         }, 3000)
-        
+
       } catch (err) {
         console.error('Error:', err)
         showToast('Error al copiar enlace', 'danger')
@@ -1301,7 +1156,7 @@ export default {
 
     const clearPlaylist = () => {
       if (!activePlaylist.value || activePlaylist.value.songs.length === 0) return
-      
+
       if (confirm('¿Seguro que quieres borrar todas las canciones de esta lista?')) {
         activePlaylist.value.songs = []
         saveToStorage()
@@ -1334,7 +1189,7 @@ export default {
       const toastMessage = document.getElementById('toast-message')
       if (toastMessage && toast.value) {
         toastMessage.textContent = message
-        
+
         // Color según tipo
         const colors = {
           success: 'bg-success text-white',
@@ -1342,7 +1197,7 @@ export default {
           warning: 'bg-warning text-dark',
           danger: 'bg-danger text-white'
         }
-        
+
         toast.value.className = 'toast ' + (colors[type] || colors.success)
         bootstrapToast.value?.show()
       }
@@ -1351,7 +1206,7 @@ export default {
     // Funciones de Drag and Drop
     const onDragStart = (event, index) => {
       draggedIndex.value = index
-      
+
       // Crear una imagen fantasma personalizada
       const dragImage = event.target.closest('.list-group-item')
       if (dragImage) {
@@ -1364,7 +1219,7 @@ export default {
         event.dataTransfer.setDragImage(clone, 0, 0)
         setTimeout(() => document.body.removeChild(clone), 0)
       }
-      
+
       event.dataTransfer.effectAllowed = 'move'
     }
 
@@ -1390,14 +1245,14 @@ export default {
     const onDrop = (event, dropIndex) => {
       event.preventDefault()
       event.stopPropagation()
-      
+
       if (draggedIndex.value === null || !activePlaylist.value) return
-      
+
       const fromIndex = draggedIndex.value
-      
+
       // Usar dragOverIndex si está definido (más preciso que dropIndex)
       const targetIndex = dragOverIndex.value !== null ? dragOverIndex.value : dropIndex
-      
+
       if (fromIndex === targetIndex) {
         onDragEnd()
         return
@@ -1441,19 +1296,19 @@ export default {
       showInstallButton,
       toast,
       linkCopied,
-      
+
       // Estado TTS
       availableVoices,
       selectedVoiceIndex,
       selectedVoice,
-      
+
       // Estado caché
       getCacheStatus,
       recacheAudio,
       currentlyCaching,
       cachedUrls,
       audioPlayerComposable,
-      
+
       // Estado explorador Sambango
       useUrlInput,
       sambangoTree,
@@ -1462,22 +1317,22 @@ export default {
       selectedMp3,
       getCurrentFolder,
       previewingUrl,
-      
+
       // Estado drag and drop
       draggedIndex,
       dragOverIndex,
-      
+
       // Computed
       hasPrevious,
       hasNext,
       currentSongIndex,
-      
+
       // Métodos de playlist
       createPlaylist,
       selectPlaylist,
       deletePlaylist,
       renamePlaylist,
-      
+
       // Métodos de canciones
       addSong,
       removeSong,
@@ -1490,11 +1345,12 @@ export default {
       restartPlaylist,
       playNext,
       playPrevious,
+      playIndex,
       copyShareLink,
       clearPlaylist,
       exitReadOnlyMode,
       installPWA,
-      
+
       // Métodos explorador Sambango
       selectMp3File,
       handlePlayPreview,
@@ -1507,7 +1363,7 @@ export default {
       toggleInputMode,
       handleReloadSambangoTree,
       sambangoTreeContainer,
-      
+
       // Métodos drag and drop
       onDragStart,
       onDragEnd,
@@ -1712,12 +1568,12 @@ input[type="text"]:focus {
   .card-body {
     padding: 1rem !important;
   }
-  
+
   .btn-group .btn {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
   }
-  
+
   .text-truncate {
     max-width: 200px;
   }
